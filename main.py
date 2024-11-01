@@ -1,18 +1,21 @@
 import random
 import time
+import streamlit as st
 
-time = int(time.strftime("%H"))
-if 5 <= time < 12:
+current_hour = int(time.strftime("%H"))
+if 5 <= current_hour < 12:
     greeting = "Good morning Aarush ji"
-elif time==12:
+elif current_hour == 12:
     greeting = "Good noon Aarush ji"
-elif 12 <= time < 16:
+elif 12 <= current_hour < 16:
     greeting = "Good afternoon Aarush ji"
-elif 16 <= time < 22:
+elif 16 <= current_hour < 22:
     greeting = "Good evening Aarush ji"
 else:
     greeting = "Good night Aarush ji"
-    print(f"{greeting}")
+
+st.title("Welcome to the Chess Puzzle Bot!")
+st.header(greeting)
 
 puzzles = {
     "beginner": [
@@ -134,38 +137,12 @@ puzzles = {
     ]
 }
 
-def get_puzzle(level):
-    """
-    Returns a random puzzle FEN from the specified difficulty level.
-    """
-    return random.choice(puzzles[level])
+difficulty = st.selectbox("Select puzzle difficulty:", ["beginner", "intermediate", "advanced"])
 
-def main():
-    print("Itz UR Friend Mayank")
-    print("Welcome to the Chess Puzzle Bot!")
-    print("Choose difficulty level:")
-    print("1. Beginner (400-800 ELO)")
-    print("2. Intermediate (800-1800 ELO)")
-    print("3. Advanced (1800-2800 ELO)")
-    print("4. Quit")
+selected_puzzle = random.choice(puzzles[difficulty])
+st.subheader(f"Your {difficulty} puzzle:")
+st.write(selected_puzzle)
 
-    while True:
-        choice = input("Enter your choice (1-4): ")
-
-        if choice == "1":
-            fen = get_puzzle("beginner")
-            print(f"Beginner puzzle FEN: {fen}")
-        elif choice == "2":
-            fen = get_puzzle("intermediate")
-            print(f"Intermediate puzzle FEN: {fen}")
-        elif choice == "3":
-            fen = get_puzzle("advanced")
-            print(f"Advanced puzzle FEN: {fen}")
-        elif choice == "4":
-            print("Thank you for using the Chess Puzzle Bot. Goodbye!")
-            break
-        else:
-            print("Invalid choice. Please enter a number between 1 and 4.")
-
-if __name__ == "__main__":
-    main()
+if st.button("Get a new puzzle"):
+    selected_puzzle = random.choice(puzzles[difficulty])
+    st.write(selected_puzzle)
